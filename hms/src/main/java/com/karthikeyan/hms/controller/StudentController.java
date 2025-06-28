@@ -1,8 +1,13 @@
 package com.karthikeyan.hms.controller;
 
+import com.karthikeyan.hms.entity.Room;
 import com.karthikeyan.hms.entity.Student;
+import com.karthikeyan.hms.entity.Warden;
+import com.karthikeyan.hms.service.RoomService;
 import com.karthikeyan.hms.service.StudentService;
+import com.karthikeyan.hms.service.WardenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,14 +27,19 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class StudentController {
     private final StudentService studentService;
+    private final RoomService roomService;
+    private final WardenService wardenService;
 
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, RoomService roomService, WardenService wardenService){
         this.studentService = studentService;
+        this.roomService = roomService;
+        this.wardenService = wardenService;
     }
 
     @PostMapping
     public Student saveStudent(@RequestBody Student student) {
+        student.setFeesStatus("Pending");
         return studentService.saveStudent(student);
     }
 
@@ -57,4 +68,25 @@ public class StudentController {
     public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
     }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<Student> assignRoomAndWarden(@PathVariable Long id, @RequestBody Map<String, Long> requestBody) {
+
+        Long roomId = requestBody.get("roomId");
+        Long wardenId = requestBody.get("wardenId");
+
+        Optional<Student> optionalStudent = studentService.getStudentById(id);
+        Optional<Room> optionalRoom = roomService.getRoomById(roomId);
+        Optional<Warden> optionalWarden = wardenService.getWardenById(wardenId);
+
+        if (optionalStudent.isPresent() && optionalRoom.isPresent() && optionalWarden.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setRoom(optionalRoom.get());
+            student.setWarden(optionalWarden.get());
+            return ResponseEntity.ok(studentService.updateStudent(student));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
