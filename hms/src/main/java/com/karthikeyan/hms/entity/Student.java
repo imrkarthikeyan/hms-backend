@@ -1,6 +1,7 @@
 package com.karthikeyan.hms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,11 +48,12 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    @JsonIgnore  //prevent circular serialization
+    @JsonIgnoreProperties({"students", "hibernateLazyInitializer", "handler"})
     private Room room;
 
     @ManyToOne
     @JoinColumn(name = "warden_id")
+    @JsonIgnoreProperties({"students", "hibernateLazyInitializer", "handler"})
     private Warden warden;
 
     public Student(Long id, String name, String email, String contactNumber, String collegeName, String firebaseUid, String feesStatus, Room room, Warden warden) {
