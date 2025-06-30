@@ -27,8 +27,12 @@ public class Complaint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 500)
-    private String content;
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String description;
+
 
     @Column(nullable = false)
     private String status;
@@ -40,9 +44,11 @@ public class Complaint {
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    public Complaint(Long id, String content, String status, LocalDateTime createdAt, Student student) {
+
+    public Complaint(Long id, String type, String description, String status, LocalDateTime createdAt, Student student) {
         this.id = id;
-        this.content = content;
+        this.type = type;
+        this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.student = student;
@@ -57,14 +63,6 @@ public class Complaint {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getStatus() {
@@ -89,5 +87,21 @@ public class Complaint {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -8,9 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -20,8 +18,6 @@ import java.time.LocalDate;
 @Table(name = "parent_visit_requests")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 public class ParentVisitRequest {
 
@@ -35,18 +31,42 @@ public class ParentVisitRequest {
     @Column(nullable = false)
     private String status;
 
+    @Column(nullable = false, name = "visitor_name")
+    private String visitorName;
+
+    @Column(nullable = false)
+    private String reason;
+
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    public ParentVisitRequest(Long id, LocalDate requestDate, String status, Student student) {
+    public ParentVisitRequest(Long id, LocalDate requestDate, String status, String visitorName, String reason, Student student) {
         this.id = id;
         this.requestDate = requestDate;
         this.status = status;
+        this.visitorName = visitorName;
+        this.reason = reason;
         this.student = student;
     }
 
     public ParentVisitRequest() {
+    }
+
+    public String getVisitorName() {
+        return visitorName;
+    }
+
+    public void setVisitorName(String visitorName) {
+        this.visitorName = visitorName;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public Long getId() {

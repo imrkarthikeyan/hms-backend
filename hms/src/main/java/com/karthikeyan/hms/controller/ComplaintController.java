@@ -40,6 +40,10 @@ public class ComplaintController {
             complaint.setStudent(studentOpt.get());
             complaint.setStatus("Pending");
             complaint.setCreatedAt(LocalDateTime.now());
+            if (complaint.getDescription() == null || complaint.getType() == null) {
+                throw new RuntimeException("Description and type cannot be null");
+            }
+
             return complaintService.submitComplaint(complaint);
         }
         throw new RuntimeException("Student not found");

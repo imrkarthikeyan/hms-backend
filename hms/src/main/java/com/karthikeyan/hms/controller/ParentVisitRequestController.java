@@ -39,7 +39,6 @@ public class ParentVisitRequestController {
         Optional<Student> studentOpt = studentService.getStudentById(studentId);
         if (studentOpt.isPresent()) {
             request.setStudent(studentOpt.get());
-            request.setRequestDate(LocalDate.now());
             request.setStatus("Pending");
             return visitService.submitRequest(request);
         }
