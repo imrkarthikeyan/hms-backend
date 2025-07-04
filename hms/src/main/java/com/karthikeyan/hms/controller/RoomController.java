@@ -30,6 +30,8 @@ public class RoomController {
 
     @PostMapping
     public Room saveRoom(@RequestBody Room room) {
+        room.setCapacity(4);
+        room.setCurrentOccupancy(0);
         return roomService.saveRoom(room);
     }
 

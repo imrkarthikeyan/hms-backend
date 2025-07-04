@@ -38,7 +38,7 @@ public class ComplaintController {
         Optional<Student> studentOpt = studentService.getStudentById(studentId);
         if (studentOpt.isPresent()) {
             complaint.setStudent(studentOpt.get());
-            complaint.setStatus("Pending");
+            complaint.setStatus("PENDING");
             complaint.setCreatedAt(LocalDateTime.now());
             if (complaint.getDescription() == null || complaint.getType() == null) {
                 throw new RuntimeException("Description and type cannot be null");
@@ -62,7 +62,7 @@ public class ComplaintController {
 
     @GetMapping("/status/{status}")
     public List<Complaint> getComplaintsByStatus(@PathVariable String status) {
-        return complaintService.getComplaintByStatus(status);
+        return complaintService.getComplaintByStatus(status.toUpperCase());
     }
 
     @PutMapping("/{id}")

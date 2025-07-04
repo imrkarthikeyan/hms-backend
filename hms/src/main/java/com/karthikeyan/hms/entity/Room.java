@@ -34,7 +34,7 @@ public class Room {
     @Column(nullable = false)
     private int capacity;
 
-    @Column(name = "current_occupancy")
+    @Column(nullable = false,name = "current_occupancy")
     private int currentOccupancy;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)

@@ -39,9 +39,10 @@ public class WardenController {
     }
 
     @GetMapping("/firebase/{firebaseUid}")
-    public Optional<Warden> getWardenByFirebaseUid(@PathVariable String firebaseUid) {
-        return wardenService.getWardenByFirebaseUid(firebaseUid);
+    public Warden getWardenByFirebaseUid(@PathVariable String firebaseUid) {
+        return wardenService.getWardenByFirebaseUid(firebaseUid).orElseThrow(() -> new RuntimeException("Warden not found"));
     }
+
 
     @GetMapping
     public List<Warden> getAllWardens() {

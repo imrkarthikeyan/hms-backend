@@ -81,8 +81,19 @@ public class StudentController {
 
         if (optionalStudent.isPresent() && optionalRoom.isPresent() && optionalWarden.isPresent()) {
             Student student = optionalStudent.get();
-            student.setRoom(optionalRoom.get());
+            Room room = optionalRoom.get();
+            if (room.getCurrentOccupancy() >= room.getCapacity()) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            Room previousRoom = student.getRoom();
+            if (previousRoom != null && !previousRoom.getId().equals(room.getId())) {
+                previousRoom.setCurrentOccupancy(previousRoom.getCurrentOccupancy() - 1);
+                roomService.saveRoom(previousRoom);
+            }
+            student.setRoom(room);
             student.setWarden(optionalWarden.get());
+            room.setCurrentOccupancy(room.getCurrentOccupancy() + 1);
+            roomService.saveRoom(room);
             return ResponseEntity.ok(studentService.updateStudent(student));
         } else {
             return ResponseEntity.badRequest().build();
