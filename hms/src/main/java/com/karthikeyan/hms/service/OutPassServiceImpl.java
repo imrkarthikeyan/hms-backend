@@ -52,4 +52,9 @@ public class OutPassServiceImpl implements OutPassService{
     public void deleteOutPass(Long id) {
         outPassRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<OutPass> getLatestApprovedOutPassForStudent(Long studentId){
+        return outPassRepository.findTopByStudentIdAndStatusOrderByEndToDesc(studentId, "Approved");
+    }
 }

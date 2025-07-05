@@ -57,7 +57,7 @@ public class OutPassController {
     }
 
     @GetMapping("/status/{status}")
-    public List<OutPass> getOutPassByStatus(String status) {
+    public List<OutPass> getOutPassByStatus(@PathVariable String status) {
         return outPassService.getOutPassByStatus(status.toUpperCase());
     }
 
@@ -70,4 +70,10 @@ public class OutPassController {
     public void deleteOutPass(@PathVariable Long id) {
         outPassService.deleteOutPass(id);
     }
+
+    @GetMapping("/student/{studentId}/latest")
+    public OutPass getLatestApprovedOutPass(@PathVariable Long studentId) {
+        return outPassService.getLatestApprovedOutPassForStudent(studentId).orElse(null);
+    }
+
 }

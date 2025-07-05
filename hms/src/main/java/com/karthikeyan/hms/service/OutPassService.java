@@ -13,5 +13,6 @@ public interface OutPassService {
     List<OutPass> getOutPassByStudent(Student student);
     List<OutPass> getOutPassByStatus(String status);
     OutPass updateOutPass(OutPass outPass);
+    Optional<OutPass> getLatestApprovedOutPassForStudent(Long studentId);
     void deleteOutPass(Long id);
 }
