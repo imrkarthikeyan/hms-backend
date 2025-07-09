@@ -18,8 +18,6 @@ import lombok.ToString;
 @Table(name = "fees_update_requests")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 public class FeesUpdateRequest {
 
